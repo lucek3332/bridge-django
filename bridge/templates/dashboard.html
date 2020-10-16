@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Bridge!{% endblock %}
+
+{% block content %}
+    <div class="menu">
+        <ul>
+            <li>Strona główna</li>
+            <li><a href="{% url 'accounts:logout' %}">Wyloguj się</a></li>
+        </ul>
+    </div>
+
+    <div class="header">
+        <h1>Bridge</h1>
+    </div>
+
+    <div class="text">
+        <p>Witaj {{ request.user.first_name }} na stronie!</p>
+    </div>
+{% endblock %}

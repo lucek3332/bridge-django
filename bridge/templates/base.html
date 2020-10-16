@@ -1,0 +1,26 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="author" content="Jakub Szulgit">
+        <meta name="keywords" content="bridge, pygame, django, cards">
+        <meta name="viewport" content="width=device-width">
+        <link href="{% static 'css/style.css' %}" rel="stylesheet">
+        <title>{% block title %}{% endblock %}</title>
+    </head>
+
+    <body>
+        <div class="logo">
+        </div>
+
+        <div class="content">
+            {% block content %}
+            {% endblock %}
+        </div>
+
+        <div class="footer">
+        </div>
+    </body>
+</html>
