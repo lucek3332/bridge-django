@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Logowanie{% endblock %}
+
+{% block content %}
+    <div class="header">
+        <h1>Zaloguj się</h1>
+    </div>
+    <form action="." method="post">
+        {{ form.as_p }}
+        {% csrf_token %}
+    <input type="submit" value="Zaloguj się">
+    </form>
+    <p><a href="{% url 'accounts:register' %}">Rejestracja</a></p>
+    <p><a href=".">Zapomniałem hasłą</a></p>
+
+{% endblock %}

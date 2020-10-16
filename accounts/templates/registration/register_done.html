@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block title %}Utworzono konto{% endblock %}
+
+{% block content %}
+    <div class="header">
+        <h1>Utworzono nowe konto!</h1>
+    </div>
+    <p>Rejestracja zakończona sukcesem. Możesz się teraz <a href="{% url 'accounts:login' %}">zalogować</a></p>
+{% endblock %}
