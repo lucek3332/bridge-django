@@ -12,6 +12,6 @@
     <input type="submit" value="Zaloguj się">
     </form>
     <p><a href="{% url 'accounts:register' %}">Rejestracja</a></p>
-    <p><a href=".">Zapomniałem hasłą</a></p>
+    <p><a href="{% url 'accounts:password_reset' %}">Zapomniałem hasłą</a></p>
 
 {% endblock %}

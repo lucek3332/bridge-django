@@ -59,6 +59,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             'bridge/templates/',
+            'accounts/templates/',
         ],
         'APP_DIRS': True,
         'OPTIONS': {
