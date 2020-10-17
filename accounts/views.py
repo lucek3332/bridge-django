@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .forms import ProfileRegisterForm, UserRegisterForm
 from django.contrib.auth.models import User
 from .models import Profile
+from django.core.mail import EmailMessage
 
 
 def register_view(request):
@@ -13,9 +14,14 @@ def register_view(request):
             prof_cd = profile_form.cleaned_data
             new_user = User.objects.create(**user_cd)
             new_user.set_password(prof_cd['password'])
+            new_user.is_active = False
             new_user.save()
             profile = Profile.objects.create(user=new_user, photo=prof_cd["photo"], description=prof_cd["description"])
             profile.save()
+            email_subject = "Rejestracja na stronie brydża!"
+            email_message = "Gratulacje {}! Twoja rejestracja na stronie brydża została zakończona pomyślnie. Żeby się zalogować kliknij poniższy link.".format(new_user.first_name)
+            email = EmailMessage(email_subject, email_message, to=[new_user.email])
+            email.send()
             return render(request, "registration/register_done.html", {"user": new_user,
                                                                        "profile": profile})
     else:

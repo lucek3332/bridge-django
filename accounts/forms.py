@@ -2,9 +2,12 @@ from django import forms
 from django.forms import ModelForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from django.contrib.auth.password_validation import validate_password
 
 
 class UserRegisterForm(ModelForm):
+    email = forms.EmailField(required=True)
+
     class Meta:
         model = User
         fields = ["username", "first_name", "last_name", "email"]
@@ -13,20 +16,28 @@ class UserRegisterForm(ModelForm):
         }
 
     def clean_email(self):
-        cd = self.cleaned_data
-        if cd['email'] == "":
-            raise ValidationError("Proszę podać email.")
-        return cd['email']
+        email = self.cleaned_data.get("email")
+        if User.objects.filter(email=email).exists():
+            raise ValidationError("Istnieje już konto z podanym mailem.")
+        return email
 
 
 class ProfileRegisterForm(forms.Form):
     photo = forms.ImageField(required=False)
-    description = forms.CharField(widget=forms.Textarea, label="Opis", required=False)
+    description = forms.CharField(widget=forms.Textarea(attrs={'placeholder': "Wpisz używane systemy licytacyjne"}), label="Opis", required=False)
     password = forms.CharField(widget=forms.PasswordInput, label="Hasło")
     password2 = forms.CharField(widget=forms.PasswordInput, label="Powtórz hasło")
 
-    def clean_password2(self):
-        cd = self.cleaned_data
-        if cd['password'] != cd['password2']:
-            raise ValidationError("Hasła nie są identyczne!")
-        return cd['password2']
+    def clean_password(self):
+        password = self.cleaned_data['password']
+        validate_password(password)
+        return password
+
+    def clean(self):
+        cd = super().clean()
+        password = cd.get("password")
+        password2 = cd.get("password2")
+
+        if password and password2:
+            if password != password2:
+                self.add_error("password2", "Hasła nie są identyczne!")
