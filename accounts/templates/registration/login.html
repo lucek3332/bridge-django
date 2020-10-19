@@ -6,12 +6,14 @@
     <div class="header">
         <h1>Zaloguj się</h1>
     </div>
-    <form action="." method="post">
-        {{ form.as_p }}
-        {% csrf_token %}
-    <input type="submit" value="Zaloguj się">
-    </form>
-    <p><a href="{% url 'accounts:register' %}">Rejestracja</a></p>
-    <p><a href="{% url 'accounts:password_reset' %}">Zapomniałem hasłą</a></p>
+    <div class="form">
+        <form action="." method="post">
+            {{ form.as_p }}
+            {% csrf_token %}
+        <input type="submit" value="Zaloguj się">
+        </form>
+        <p><a href="{% url 'accounts:register' %}">Rejestracja</a></p>
+        <p><a href="{% url 'accounts:password_reset' %}">Zapomniałem hasłą</a></p>
+    </div>
 
 {% endblock %}
