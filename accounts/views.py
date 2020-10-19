@@ -32,12 +32,14 @@ def register_view(request):
                             "{}://{}/accounts/register_confirm/{}/{}".format(new_user.first_name, protocol, domain, uid, token)
             send_mail_task.delay(email_subject, email_message, EMAIL_HOST_USER, [new_user.email])
             return render(request, "registration/register_done.html", {"user": new_user,
-                                                                       "profile": profile})
+                                                                       "profile": profile,
+                                                                       "section": "dashboard"})
     else:
         user_form = UserRegisterForm()
         profile_form = ProfileRegisterForm()
     return render(request, "registration/register.html", {"user_form": user_form,
-                                                          "profile_form": profile_form})
+                                                          "profile_form": profile_form,
+                                                          "section": "dashboard"})
 
 
 def register_confirm_view(request, uidb64, token):
@@ -49,4 +51,5 @@ def register_confirm_view(request, uidb64, token):
         user.save()
         login(request, user, backend='django.contrib.auth.backends.ModelBackend')
         validtoken = True
-    return render(request, "registration/register_confirm.html", {"validtoken": validtoken})
+    return render(request, "registration/register_confirm.html", {"validtoken": validtoken,
+                                                                  "section": "dashboard"})
