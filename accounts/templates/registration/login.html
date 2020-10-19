@@ -3,17 +3,27 @@
 {% block title %}Logowanie{% endblock %}
 
 {% block content %}
-    <div class="header">
-        <h1>Zaloguj się</h1>
-    </div>
-    <div class="form">
-        <form action="." method="post">
-            {{ form.as_p }}
-            {% csrf_token %}
-        <input type="submit" value="Zaloguj się">
-        </form>
-        <p><a href="{% url 'accounts:register' %}">Rejestracja</a></p>
-        <p><a href="{% url 'accounts:password_reset' %}">Zapomniałem hasłą</a></p>
+    <div class="content">
+        <div class="header">
+            <h1>Logowanie</h1>
+        </div>
+
+        <div class="form">
+            <form action="." method="post">
+                {{ form.as_p }}
+                {% csrf_token %}
+                <input id="button" type="submit" value="Zaloguj">
+            </form>
+            <div class="subform">
+                <div class="subform-item">
+                    <p><a href="{% url 'accounts:register' %}">Rejestracja</a></p>
+                </div>
+
+                <div class="subform-item">
+                    <p><a href="{% url 'accounts:password_reset' %}">Zapomniałem hasła</a></p>
+                </div>
+            </div>
+        </div>
     </div>
 
 {% endblock %}

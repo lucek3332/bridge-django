@@ -3,12 +3,17 @@
 {% block title %}Aktywacja konta{% endblock %}
 
 {% block content %}
-    <div class="header">
-        <h1>Aktywacja konta</h1>
+    <div class="content-text">
+        <div class="header">
+            <h1>Aktywacja konta</h1>
+        </div>
+
+        <div class="text">
+            {% if validtoken %}
+                <p>Aktywacja zakończona powodzeniem. Witaj na stronie {{ request.user.first_name }}!</p>
+            {% else %}
+                <p>Link został wykorzystany wcześniej lub jest blędny.</p>
+            {% endif %}
+        </div>
     </div>
-    {% if validtoken %}
-        <p>Aktywacja zakończona powodzeniem. Witaj na stronie {{ request.user.first_name }}!</p>
-    {% else %}
-        <p>Link został wykorzystany wcześniej lub jest blędny.</p>
-    {% endif %}
 {% endblock %}

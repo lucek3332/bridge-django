@@ -3,14 +3,18 @@
 {% block title %}Rejestracja{% endblock %}
 
 {% block content %}
-    <div class="header">
-        <h1>Zarejestruj się</h1>
+    <div class="content">
+        <div class="header">
+            <h1>Rejestracja</h1>
+        </div>
+
+        <div class="form">
+            <form action="." method="post">
+                {{ user_form.as_p }}
+                {{ profile_form.as_p }}
+                {% csrf_token %}
+                <input id="button" type="submit" value="Zarejestruj">
+            </form>
+        </div>
     </div>
-    <p>Uzupełnij poniższy formularz, żeby się zarejestrować.</p>
-    <form action="." method="post">
-        {{ user_form.as_p }}
-        {{ profile_form.as_p }}
-        {% csrf_token %}
-    <input type="submit" value="Zarejestruj się">
-    </form>
 {% endblock %}
