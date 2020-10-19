@@ -2,11 +2,12 @@ from django.shortcuts import render
 from .forms import ProfileRegisterForm, UserRegisterForm
 from django.contrib.auth.models import User
 from .models import Profile
-from django.core.mail import EmailMessage
 from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import login
+from accounts.tasks import send_mail_task
+from bridge.settings import EMAIL_HOST_USER
 
 
 def register_view(request):
@@ -29,8 +30,7 @@ def register_view(request):
             email_subject = "Aktywacja konta"
             email_message = "Witaj {}! W celu aktywacji konta kliknij poniższy link. " \
                             "{}://{}/accounts/register_confirm/{}/{}".format(new_user.first_name, protocol, domain, uid, token)
-            email = EmailMessage(email_subject, email_message, to=[new_user.email])
-            email.send()
+            send_mail_task.delay(email_subject, email_message, EMAIL_HOST_USER, [new_user.email])
             return render(request, "registration/register_done.html", {"user": new_user,
                                                                        "profile": profile})
     else:
@@ -38,6 +38,7 @@ def register_view(request):
         profile_form = ProfileRegisterForm()
     return render(request, "registration/register.html", {"user_form": user_form,
                                                           "profile_form": profile_form})
+
 
 def register_confirm_view(request, uidb64, token):
     user = get_object_or_404(User, pk=uidb64)
@@ -49,4 +50,3 @@ def register_confirm_view(request, uidb64, token):
         login(request, user, backend='django.contrib.auth.backends.ModelBackend')
         validtoken = True
     return render(request, "registration/register_confirm.html", {"validtoken": validtoken})
-

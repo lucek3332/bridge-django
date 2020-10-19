@@ -3,6 +3,9 @@ from django.forms import ModelForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.contrib.auth.password_validation import validate_password
+from django.contrib.auth.forms import PasswordResetForm
+from accounts.tasks import send_mail_task
+from django.template import loader
 
 
 class UserRegisterForm(ModelForm):
@@ -41,3 +44,16 @@ class ProfileRegisterForm(forms.Form):
         if password and password2:
             if password != password2:
                 self.add_error("password2", "Hasła nie są identyczne!")
+
+
+class CustomPasswordResetForm(PasswordResetForm):
+    def send_mail(self, subject_template_name, email_template_name, context, from_email, to_email, html_email_template_name=None):
+        """
+        Send a django.core.mail.EmailMultiAlternatives to `to_email`.
+        """
+        subject = loader.render_to_string(subject_template_name, context)
+        # Email subject *must not* contain newlines
+        subject = ''.join(subject.splitlines())
+        body = loader.render_to_string(email_template_name, context)
+
+        send_mail_task.delay(subject, body, from_email, [to_email])
