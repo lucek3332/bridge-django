@@ -7,20 +7,85 @@
         <meta name="author" content="Jakub Szulgit">
         <meta name="keywords" content="bridge, pygame, django, cards">
         <meta name="viewport" content="width=device-width">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Titillium+Web:wght@900&display=swap" rel="stylesheet">
         <link href="{% static 'css/style.css' %}" rel="stylesheet">
         <title>{% block title %}{% endblock %}</title>
     </head>
 
     <body>
-        <div class="logo">
-        </div>
+        <div class="container">
+            <div class="logo-container">
+                <div class="logo">
+                    <div id="logo-title">
+                        <span id="colored">B</span>ridge
+                    </div>
+                    <div id="logo-image">
+                        <img src="{% static 'images/logo.png' %}" height="100">
+                    </div>
+                </div>
 
-        <div class="content">
-            {% block content %}
-            {% endblock %}
-        </div>
+                <div class="menu">
+                    <div class="menu-item {% if section == 'dashboard' %}selected{% endif %}">
+                        <a href="/">Strona główna</a>
+                    </div>
 
-        <div class="footer">
+                    <div class="menu-item">
+                        {% if request.user.is_authenticated %}
+                            <a href=".">Graj!</a>
+                        {% endif %}
+                    </div>
+
+                    <div class="menu-item">
+                        {% if request.user.is_authenticated %}
+                            <a href=".">Historia</a>
+                        {% endif %}
+                    </div>
+
+                    <div class="menu-item">
+                        {% if request.user.is_authenticated %}
+                            <a href=".">Moje konto</a>
+                        {% endif %}
+                    </div>
+
+                    <div class="menu-item">
+                        {% if request.user.is_authenticated %}
+                            <a href="{% url 'accounts:logout' %}">Wyloguj się</a>
+                        {% else %}
+                            <a href="{% url 'accounts:login' %}">Zaloguj się</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="content">
+                {% block content %}
+                {% endblock %}
+            </div>
+
+            <div class="footer">
+                <div class="left-footer">
+                    <div class="left-footer-item">
+                        <p>Jakub Szulgit &copy; 2020</p>
+                    </div>
+
+                    <div class="left-footer-item">
+                        <p>jakubszulgit@gmail.com</p>
+                    </div>
+                </div>
+                <div class="right-footer">
+                    <div class="right-footer-item">
+                        <a href="https://github.com/lucek3332"><img src="{% static 'images/github.png' %}" height="60"></a>
+                    </div>
+
+                    <div class="right-footer-item">
+                        <a href="https://www.codewars.com/users/lucek3332"><img src="{% static 'images/codewars.png' %}" height="70"></a>
+                    </div>
+
+                    <div class="right-footer-item">
+                        <a href="."><img src="{% static 'images/linkedin.png' %}" height="60"></a>
+                    </div>
+                </div>
+            </div>
         </div>
     </body>
 </html>
