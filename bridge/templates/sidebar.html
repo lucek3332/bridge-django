@@ -1,0 +1,17 @@
+<div class="sidebar">
+            <br>
+            {% if friends %}
+                {% for friend in friends %}
+                    <div class="friend-wrapper">
+                        <div class="friend-username">
+                            <a href="{{ friend.get_absolute_url }}">{{ friend.user.username }}</a>
+                        </div>
+
+                        <div class="friend-{% if friend.is_online %}online{% else %}offline{% endif %}">
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class='message-info'>Nie masz jeszcze żadnych znajomych.</div>
+            {% endif %}
+        </div>

@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.shortcuts import reverse
 
 
 class Profile(models.Model):
@@ -13,6 +14,10 @@ class Profile(models.Model):
 
     class Meta:
         ordering = ("-is_online", "user")
+
+    def get_absolute_url(self):
+        return reverse("accounts:profile", args=[str(self.user.pk)])
+
 
     def __str__(self):
         return "Profil - {}".format(self.user)

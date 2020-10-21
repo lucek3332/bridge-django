@@ -14,25 +14,7 @@
             </div>
         </div>
 
-        <div class="sidebar">
-            <br>
-            {% if friends %}
-                {% for friend in friends %}
-                    <div class="friend-wrapper">
-                        <div class="friend-username">
-                            {{ friend.user.username }}
-                        </div>
-
-                        <div class="friend-{% if friend.is_online %}online{% else %}offline{% endif %}">
-                        </div>
-                    </div>
-                {% endfor %}
-            {% else %}
-                {% for message in messages %}
-                    <div {% if message.tags %} class='message-{{ message.tags }}' {% endif %}>{{ message }}</div>
-                {% endfor %}
-            {% endif %}
-        </div>
+        {% include 'sidebar.html' %}
     </div>
 
     <script type="text/javascript">

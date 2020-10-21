@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Bridge!{% endblock %}
+
+{% block content %}
+    <div class="content-with-sidebar">
+        <div class="content-profile">
+            <div class="header">
+                <h1>{{ user_profile.username }}</h1>
+            </div>
+
+            <div class="profile-wrapper">
+                <div class="profile-image">
+                    {% if user_profile.profile.photo %}
+                        <img src="{{ user_profile.profile.photo.url }}">
+                    {% else %}
+                        <img src="{% static 'default/no_photo.jpeg' %}">
+                    {% endif %}
+                </div>
+
+                <div class="profile-fields">
+                    <div class="profile-field">
+                        <span id="colored">Imię:</span> {% if user_profile.first_name %}{{ user_profile.first_name }}{% else %}brak danych{% endif %}
+                    </div>
+
+                    <div class="profile-field">
+                        <span id="colored">Nazwisko:</span> {% if user_profile.last_name %}{{ user_profile.last_name }}{% else %}brak danych{% endif %}
+                    </div>
+
+                    <div class="profile-field">
+                        <span id="colored">Email:</span> {% if user_profile.email %}{{ user_profile.email }}{% else %}brak danych{% endif %}
+                    </div>
+
+                    <div class="profile-field">
+                        <span id="colored">Opis systemu:</span> {% if user_profile.profile.description %}{{ user_profile.profile.description }}{% else %}brak danych{% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% include 'sidebar.html' %}
+    </div>
+
+    <script type="text/javascript">
+       window.setTimeout(function () {
+        location.href = ".";
+    }, 1000000);
+    </script>
+
+{% endblock %}

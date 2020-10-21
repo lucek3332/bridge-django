@@ -76,6 +76,13 @@ def edit_profile_view(request):
                                                "section": "account"})
 
 
+@login_required
+def profile_view(request, user_id):
+    user_profile = get_object_or_404(User, pk=user_id)
+    return render(request, "users/profile.html", {"user_profile": user_profile,
+                                                  "section": "dashboard"})
+
+
 @receiver(user_logged_in)
 def get_online(sender, **kwargs):
     user = kwargs["user"]
