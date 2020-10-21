@@ -3,13 +3,43 @@
 {% block title %}Bridge!{% endblock %}
 
 {% block content %}
-    <div class="content-text">
-        <div class="header">
-            <h1>Bridge</h1>
+    <div class="content-with-sidebar">
+        <div class="content-text">
+            <div class="header">
+                <h1>Bridge</h1>
+            </div>
+
+            <div class="text">
+                <p>Witaj {{ request.user.first_name }} na stronie!</p>
+            </div>
         </div>
 
-        <div class="text">
-            <p>Witaj {{ request.user.first_name }} na stronie!</p>
+        <div class="sidebar">
+            <br>
+            {% if friends %}
+                {% for friend in friends %}
+                    <div class="friend-wrapper">
+                        <div class="friend-username">
+                            {{ friend.user.username }}
+                        </div>
+
+                        <div class="friend-{% if friend.is_online %}online{% else %}offline{% endif %}">
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                {% for message in messages %}
+                    <div {% if message.tags %} class='message-{{ message.tags }}' {% endif %}>{{ message }}</div>
+                {% endfor %}
+            {% endif %}
         </div>
     </div>
+
+    <script type="text/javascript">
+       window.setTimeout(function () {
+        location.href = "http://127.0.0.1:8000/";
+    }, 5000);
+    </script>
+
 {% endblock %}
+

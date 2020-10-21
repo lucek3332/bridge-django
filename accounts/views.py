@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .forms import ProfileRegisterForm, UserRegisterForm, EditUserForm, EditProfileForm
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.signals import user_logged_in, user_logged_out
 from .models import Profile
 from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
@@ -10,6 +11,7 @@ from django.contrib.auth import login
 from accounts.tasks import send_mail_task
 from bridge.settings import EMAIL_HOST_USER
 from django.contrib import messages
+from django.dispatch import receiver
 
 
 def register_view(request):
@@ -56,6 +58,7 @@ def register_confirm_view(request, uidb64, token):
     return render(request, "registration/register_confirm.html", {"validtoken": validtoken,
                                                                   "section": "dashboard"})
 
+
 @login_required
 def edit_profile_view(request):
     if request.method == "POST":
@@ -71,3 +74,19 @@ def edit_profile_view(request):
     return render(request, "users/edit.html", {"user_form": user_form,
                                                "profile_form": profile_form,
                                                "section": "account"})
+
+
+@receiver(user_logged_in)
+def get_online(sender, **kwargs):
+    user = kwargs["user"]
+    profile = get_object_or_404(Profile, user=user)
+    profile.is_online = True
+    profile.save()
+
+
+@receiver(user_logged_out)
+def get_offline(sender, **kwargs):
+    user = kwargs["user"]
+    profile = get_object_or_404(Profile, user=user)
+    profile.is_online = False
+    profile.save()

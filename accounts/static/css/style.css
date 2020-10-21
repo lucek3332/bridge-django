@@ -115,6 +115,65 @@ a:link {
 	margin: 20px 0 0 0;	
 }
 
+.content-with-sidebar {
+	display: grid;
+	grid-template-columns: 3fr 1fr;
+	grid-column-gap: 100px;	
+	min-height: 500px;
+	width: 100%;	
+}
+
+.content-text {	
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;	
+}
+
+.sidebar {
+	background-color: rgb(0, 0, 0);
+	margin-right: 50px;
+	border-radius: 40px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;	
+}
+
+.friend-wrapper {
+	display: flex;
+	justify-content: space-between;
+	width: 80%;
+}
+
+.friend-username {
+	font-size: 22px;
+	font-weight: 600;
+	padding: 5px;
+	background-color: white;
+	color: rgb(191, 4, 19);
+	width: 50%;
+	margin: 3px;
+	text-align: center;
+	border-radius: 10px;
+	border: 2px solid rgb(191, 4, 19);
+}
+
+.friend-online {
+	background-color: green;
+	border-radius: 50%;
+	height: 37px;
+	width: 37px;
+	margin: 5px;
+}
+
+.friend-offline {
+	background-color: rgb(191, 4, 19);
+	border-radius: 50%;
+	height: 37px;
+	width: 37px;
+	margin: 5px;
+}
+
 /* Forms, buttons */
 
 #button {
