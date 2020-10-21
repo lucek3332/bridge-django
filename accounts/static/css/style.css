@@ -166,6 +166,19 @@ a:link {
 	font-size: 18px;	
 }
 
+.form form div.widget-image-input {
+	width: 350px;
+	padding-bottom: 5px;
+}
+
+.form form label[for="photo-clear_id"] {
+	font-size: 16px;	
+}
+
+.form form input[type="checkbox"] {	
+	width: 20px;	
+}
+
 .form form ul {
 	max-width: 320px;
 	padding-left: 20px;
@@ -182,6 +195,33 @@ a:link {
 .form form textarea {
 	width: 350px;
 	text-indent: 4px;
+	padding: 0px;
+}
+
+.messages {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;	
+}	
+
+.message-info {
+	padding: 7px;
+	background-color: green;
+	border-radius: 5px;
+	color: white;	
+	width: 350px;
+	text-align: center;
+}
+
+#profile-image img {
+	border-radius: 50%;
+	width: 200px;
+	height: 200px;
+	display: block;
+	margin: auto;
+	object-fit: contain;
+
 }
 
 .subform {
