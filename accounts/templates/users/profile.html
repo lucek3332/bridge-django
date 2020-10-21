@@ -37,6 +37,31 @@
                     </div>
                 </div>
             </div>
+            <div class="profile-buttons">
+                <div class="profile-button">
+                    <a href="/">
+                        <button id="button">Powrót</button>
+                    </a>
+                </div>
+
+                <div class="profile-button">
+                    {% if user_profile.profile in friends %}
+                        <a href="{% url 'accounts:remove_friend' user_profile.pk %}">
+                            <button id="button">Usuń ze znajomych</button>
+                        </a>
+                    {% else %}
+                        <a href="{% url 'accounts:add_friend' user_profile.pk %}">
+                            <button id="button">Dodaj do znajomych</button>
+                        </a>
+                    {% endif %}
+                </div>
+
+                <div class="profile-button">
+                    <a href=".">
+                        <button id="button">Rozmawiaj</button>
+                    </a>
+                </div>
+            </div>
         </div>
 
         {% include 'sidebar.html' %}
@@ -45,7 +70,7 @@
     <script type="text/javascript">
        window.setTimeout(function () {
         location.href = ".";
-    }, 1000000);
+    }, 5000);
     </script>
 
 {% endblock %}

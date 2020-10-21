@@ -162,6 +162,17 @@ a:link {
 	padding: 5px;
 }
 
+.profile-buttons {
+	display: flex;
+	justify-content: flex-end;
+	width: 100%;
+}
+
+.profile-button {
+	margin-right: 50px;
+	margin-bottom: 30px;
+}
+
 .sidebar {
 	background-color: rgb(0, 0, 0);
 	margin-right: 50px;
@@ -219,6 +230,7 @@ a:link {
 	font-size: 22px;
 	margin-top: 10px;
 	margin-bottom: 5px;
+	cursor: pointer;
 }
 
 .form {

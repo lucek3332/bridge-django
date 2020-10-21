@@ -6,7 +6,7 @@ from django.contrib.auth.signals import user_logged_in, user_logged_out
 from .models import Profile
 from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.contrib.auth import login
 from accounts.tasks import send_mail_task
 from bridge.settings import EMAIL_HOST_USER
@@ -81,6 +81,22 @@ def profile_view(request, user_id):
     user_profile = get_object_or_404(User, pk=user_id)
     return render(request, "users/profile.html", {"user_profile": user_profile,
                                                   "section": "dashboard"})
+
+
+@login_required()
+def remove_friend(request, user_id):
+    user = request.user
+    friend = get_object_or_404(User, pk=user_id)
+    user.profile.friends.remove(friend.profile)
+    return redirect("accounts:profile", user_id=user_id)
+
+
+@login_required()
+def add_friend(request, user_id):
+    user = request.user
+    friend = get_object_or_404(User, pk=user_id)
+    user.profile.friends.add(friend.profile)
+    return redirect("accounts:profile", user_id=user_id)
 
 
 @receiver(user_logged_in)
