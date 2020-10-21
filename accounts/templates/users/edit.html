@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Moje konto{% endblock %}
+
+{% block content %}
+    <div class="content">
+        <div class="header">
+            <h1>Moje konto</h1>
+        </div>
+
+        <div class="messages">
+            {% if messages %}
+                {% for message in messages %}
+                    <div {% if message.tags %} class='message-{{ message.tags }}' {% endif %}>{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+        <div class="form">
+            <div id="profile-image">
+                {% if request.user.profile.photo %}
+                    <img src="{{ request.user.profile.photo.url }}">
+                {% else %}
+                    <img src="{% static 'default/no_photo.jpeg' %}">
+                {% endif %}
+            </div>
+            <form action="." method="post" enctype="multipart/form-data">
+                {{ user_form.as_p }}
+                {{ profile_form.as_p }}
+                {% csrf_token %}
+                <input id="button" type="submit" value="Zapisz">
+            </form>
+        </div>
+    </div>
+{% endblock %}

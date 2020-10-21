@@ -6,6 +6,8 @@ from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.forms import PasswordResetForm
 from accounts.tasks import send_mail_task
 from django.template import loader
+from .models import Profile
+from .widgets import CustomClearableFileInput
 
 
 class UserRegisterForm(ModelForm):
@@ -57,3 +59,21 @@ class CustomPasswordResetForm(PasswordResetForm):
         body = loader.render_to_string(email_template_name, context)
 
         send_mail_task.delay(subject, body, from_email, [to_email])
+
+class EditUserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ["first_name", "last_name"]
+
+
+class EditProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ["photo", "description"]
+        widgets = {
+            "photo": CustomClearableFileInput(),
+        }
+        labels = {
+            "photo": "Zdjęcie",
+            "description": "Opis systemu",
+        }

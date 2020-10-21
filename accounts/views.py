@@ -1,6 +1,7 @@
 from django.shortcuts import render
-from .forms import ProfileRegisterForm, UserRegisterForm
+from .forms import ProfileRegisterForm, UserRegisterForm, EditUserForm, EditProfileForm
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 from .models import Profile
 from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
@@ -8,12 +9,13 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth import login
 from accounts.tasks import send_mail_task
 from bridge.settings import EMAIL_HOST_USER
+from django.contrib import messages
 
 
 def register_view(request):
     if request.method == "POST":
         user_form = UserRegisterForm(request.POST)
-        profile_form = ProfileRegisterForm(request.POST)
+        profile_form = ProfileRegisterForm(request.POST, request.FILES)
         if user_form.is_valid() and profile_form.is_valid():
             user_cd = user_form.cleaned_data
             prof_cd = profile_form.cleaned_data
@@ -53,3 +55,19 @@ def register_confirm_view(request, uidb64, token):
         validtoken = True
     return render(request, "registration/register_confirm.html", {"validtoken": validtoken,
                                                                   "section": "dashboard"})
+
+@login_required
+def edit_profile_view(request):
+    if request.method == "POST":
+        user_form = EditUserForm(request.POST, instance=request.user)
+        profile_form = EditProfileForm(data=request.POST, files=request.FILES, instance=request.user.profile)
+        if user_form.is_valid() and profile_form.is_valid():
+            messages.info(request, "Zmiany zostały zapisane")
+            user_form.save()
+            profile_form.save()
+    else:
+        user_form = EditUserForm(instance=request.user)
+        profile_form = EditProfileForm(instance=request.user.profile)
+    return render(request, "users/edit.html", {"user_form": user_form,
+                                               "profile_form": profile_form,
+                                               "section": "account"})
