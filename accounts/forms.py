@@ -60,6 +60,7 @@ class CustomPasswordResetForm(PasswordResetForm):
 
         send_mail_task.delay(subject, body, from_email, [to_email])
 
+
 class EditUserForm(forms.ModelForm):
     class Meta:
         model = User

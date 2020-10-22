@@ -11,6 +11,7 @@ from django.contrib.auth import login
 from accounts.tasks import send_mail_task
 from bridge.settings import EMAIL_HOST_USER
 from django.contrib import messages
+from django.db.models import Q
 from django.dispatch import receiver
 
 
@@ -79,8 +80,25 @@ def edit_profile_view(request):
 @login_required
 def profile_view(request, user_id):
     user_profile = get_object_or_404(User, pk=user_id)
+    if "search" in request.GET:
+        query = request.GET.get("search")
+        users = search_users(query)
+        return render(request, "search.html", {"section": "dashboard",
+                                               "search_result": users})
     return render(request, "users/profile.html", {"user_profile": user_profile,
                                                   "section": "dashboard"})
+
+
+def search_users(query):
+    list_of_queries = query.split(" ")
+    search_result = []
+    for q in list_of_queries:
+        if q != "":
+            users = User.objects.filter(Q(username__icontains=q) | Q(first_name__icontains=q) | Q(last_name__icontains=q))
+            if users:
+                for user in users:
+                    search_result.append(user)
+    return search_result
 
 
 @login_required()

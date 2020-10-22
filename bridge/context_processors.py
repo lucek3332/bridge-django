@@ -1,6 +1,6 @@
 def friends(request):
     if not request.user.is_authenticated:
-        friends = None
+        friends_list = None
     else:
-        friends = request.user.profile.friends.all()
-    return {"friends": friends}
+        friends_list = request.user.profile.friends.all()
+    return {"friends": friends_list}

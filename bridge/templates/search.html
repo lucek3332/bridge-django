@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}Bridge!{% endblock %}
+
+{% block content %}
+    <div class="content-with-sidebar">
+        <div class="content-text">
+            <div class="header">
+                <h1>Wyniki wyszukiwania</h1>
+            </div>
+
+            <div class="text">
+                {% for user in search_result %}
+                    <div>
+                        <a href="{% url 'accounts:profile' user.pk %}">
+                            {{ user.username }}
+                        </a>
+                    </div>
+                {% empty %}
+                    Żaden z użytkowników nie pasuje do wpisanej frazy.
+                {% endfor %}
+            </div>
+        </div>
+
+        {% include 'sidebar.html' %}
+    </div>
+
+{% endblock %}
