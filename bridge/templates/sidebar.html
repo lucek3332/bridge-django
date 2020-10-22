@@ -15,10 +15,9 @@
         <div class='message-info'>Nie masz jeszcze żadnych znajomych.</div>
     {% endif %}
     <div class="search-bar">
-        <form method="get">
+        <form action="." method="get">
             <input type="text" name="search">
-            {% csrf_token %}
-            <input type="submit" value="Szukaj">
+            <input id="search-button" type="submit" value="Szukaj">
         </form>
     </div>
 </div>
@@ -26,5 +25,5 @@
 <script type="text/javascript">
     window.setTimeout(function () {
         location.href = ".";
-    }, 20000);
+    }, 2000000);
 </script>

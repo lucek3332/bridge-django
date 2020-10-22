@@ -218,6 +218,56 @@ a:link {
 	margin: 5px;
 }
 
+.search-bar {	
+	width: 80%;
+	height: 100%;	
+	margin-bottom: 40px;
+}
+
+.search-bar form {
+	height: 100%;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	align-items: end;
+}
+
+.search-bar input[type="text"] {	
+	height: 35px;
+	font-size: 18px;
+	font-family: "Roboto", sans-serif;
+	text-indent: 3px;
+}
+
+#search-button {
+	background-color: rgb(191, 4, 19);
+	color: white;
+	width: 100%;
+	padding: 7px;	
+	border: none;
+	font-family: "Roboto", sans-serif;
+	font-size: 22px;	
+	cursor: pointer;
+}
+
+.search-users-wrapper {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.search-user-wrapper {
+	font-size: 22px;
+	font-weight: 600;
+	padding: 5px;
+	background-color: white;
+	color: rgb(191, 4, 19);
+	width: 100%;
+	margin: 3px;
+	text-align: center;
+	border-radius: 10px;
+	border: 2px solid rgb(191, 4, 19);
+}
+
 /* Forms, buttons */
 
 #button {

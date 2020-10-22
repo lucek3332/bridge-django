@@ -4,20 +4,20 @@
 
 {% block content %}
     <div class="content-with-sidebar">
-        <div class="content-text">
+        <div class="content-profile">
             <div class="header">
                 <h1>Wyniki wyszukiwania</h1>
             </div>
 
-            <div class="text">
+            <div class="search-users-wrapper">
                 {% for user in search_result %}
-                    <div>
-                        <a href="{% url 'accounts:profile' user.pk %}">
+                    <div class="search-user-wrapper">
+                        <a href="{{ user.profile.get_absolute_url }}">
                             {{ user.username }}
                         </a>
                     </div>
                 {% empty %}
-                    Żaden z użytkowników nie pasuje do wpisanej frazy.
+                    <div class='message-info'>Żaden z użytkowników nie pasuje do wpisanej frazy.</div>
                 {% endfor %}
             </div>
         </div>
