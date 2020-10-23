@@ -24,6 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     re_path(r'^accounts/', include(("accounts.urls", "accounts"), namespace="accounts")),
     re_path(r"^$", dashboard_view, name="dashboard"),
+    re_path(r"^chat/", include(("chat.urls", "chat"), namespace="chat")),
 ]
 
 if settings.DEBUG:
