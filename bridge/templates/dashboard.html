@@ -12,9 +12,30 @@
             <div class="text">
                 <p>Witaj {{ request.user.first_name }} na stronie!</p>
             </div>
+
+            <div class="header">
+                <h1>Powiadomienia</h1>
+            </div>
+
+            <div class="notifications">
+                {% for notification in notifications %}
+                    {% with n=notification|first link=notification|last %}
+                        <p>Masz nieprzeczytane wiadomości od <span class="selected"><a href="{% url 'chat:room' link %}">{{ n }}.</a></span></p>
+                    {% endwith %}
+                {% empty %}
+                    <p>Nie masz żadnych powiadomień.</p>
+                {% endfor %}
+            </div>
         </div>
 
         {% include 'sidebar.html' %}
     </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript">
+    setInterval(function updateDiv() {
+        $(".notifications").load(" .notifications > *");
+    }, 20000);
+</script>
 
 {% endblock %}

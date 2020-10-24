@@ -1,6 +1,6 @@
 from django.db import models
 from django.db.models import Q
-
+from django.contrib.auth.models import User
 
 
 class Message(models.Model):
@@ -8,6 +8,7 @@ class Message(models.Model):
     to = models.CharField(max_length=255)
     content = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
+    readed = models.BooleanField(default=False)
 
     class Meta:
         ordering = ("-created", )
