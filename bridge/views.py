@@ -3,7 +3,6 @@ from django.contrib.auth.decorators import login_required
 from accounts.views import search_users
 from django.contrib.auth.models import User
 from chat.models import Message
-from django.db.models import Q
 
 
 @login_required

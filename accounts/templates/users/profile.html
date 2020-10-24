@@ -59,7 +59,7 @@
 
                 <div class="profile-button">
                     {% with name_chatroom=request|chatroom_name %}
-                        <a href="{% url 'chat:room' name_chatroom %}">
+                        <a href="{% if request.user != user_profile %}{% url 'chat:room' name_chatroom %}{% else %}.{% endif %}">
                             <button id="button">Rozmawiaj</button>
                         </a>
                     {% endwith %}
