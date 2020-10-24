@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load chatroom_name %}
 
 {% block title %}Bridge!{% endblock %}
 
@@ -57,9 +58,11 @@
                 </div>
 
                 <div class="profile-button">
-                    <a href=".">
-                        <button id="button">Rozmawiaj</button>
-                    </a>
+                    {% with name_chatroom=request|chatroom_name %}
+                        <a href="{% url 'chat:room' name_chatroom %}">
+                            <button id="button">Rozmawiaj</button>
+                        </a>
+                    {% endwith %}
                 </div>
             </div>
         </div>
