@@ -9,8 +9,21 @@
                 <h1>Chat z {{ other_user.username }}</h1>
             </div>
 
+            <div class="chat-status">
+                {% if request.user.pk == other_user.profile.chat_status %}
+                    <div class="chat-status-on">
+                        Obecny
+                    </div>
+                {% else %}
+                    <div class="chat-status-off">
+                        Nieobecny
+                    </div>
+                {% endif %}
+            </div>
+
             <div class="chat-wrapper">
-                <textarea id="chat-log" cols="100" rows="18"></textarea>
+                <ul id="chat-log">
+                </ul>
                 <input id="chat-message-input" type="text" size="100">
                 <input id="chat-message-submit" type="button" value="Wyślij">
             </div>
@@ -19,8 +32,10 @@
         {% include 'sidebar.html' %}
     </div>
     {{ room_name|json_script:"room-name" }}
+    {{ request.user.username|json_script:"username" }}
     <script>
         const roomName = JSON.parse(document.getElementById('room-name').textContent);
+        const username = JSON.parse(document.getElementById('username').textContent);
 
         const chatSocket = new WebSocket(
             'ws://'
@@ -31,8 +46,8 @@
         );
 
         chatSocket.onmessage = function(e) {
-            const data = JSON.parse(e.data);
-            document.querySelector('#chat-log').value += (data.message_author + data.message + '\n');
+            var data = JSON.parse(e.data);
+            createMessage(data);
         };
 
         chatSocket.onclose = function(e) {
@@ -54,5 +69,26 @@
             }));
             messageInputDom.value = '';
         };
+
+        function createMessage(data) {
+            var author = data['message_author'];
+            var msgListTag = document.createElement('li');
+            var pTag = document.createElement('p');
+            pTag.textContent = data.message;
+
+            if (author == username) {
+                msgListTag.className = 'sent';
+            } else {
+                msgListTag.className = 'replies';
+            }
+            msgListTag.appendChild(pTag);
+            document.querySelector('#chat-log').appendChild(msgListTag);
+
+            document.getElementById('chat-log').scrollTop = msgListTag.offsetHeight + msgListTag.offsetTop;
+        };
+
+        setInterval(function updateDiv() {
+            $(".chat-status").load(" .chat-status > *");
+        }, 2000);
     </script>
 {% endblock %}

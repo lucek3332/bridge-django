@@ -16,6 +16,8 @@ class ChatConsumer(WebsocketConsumer):
         for u_id in users_id:
             if u_id != self.user.pk:
                 self.other_user = get_object_or_404(User, pk=u_id)
+        self.user.profile.chat_status = self.other_user.pk
+        self.user.profile.save()
         self.room_group_name = 'chat_%s' % self.room_name
 
         # Join room group
@@ -35,18 +37,8 @@ class ChatConsumer(WebsocketConsumer):
                 msg.save()
             self.send(text_data=json.dumps({
                 'message': msg.content,
-                'message_author': msg.author + ": ",
+                'message_author': msg.author,
             }))
-
-        # Send info about user joining to chat
-        async_to_sync(self.channel_layer.group_send)(
-            self.room_group_name,
-                {
-                    'type': 'info_message',
-                    'message': "{} dołączył do czatu.".format(self.author),
-                    'author': "",
-                }
-        )
 
     def disconnect(self, close_code):
         # Leave room group
@@ -54,6 +46,9 @@ class ChatConsumer(WebsocketConsumer):
             self.room_group_name,
             self.channel_name
         )
+
+        self.user.profile.chat_status = 0
+        self.user.profile.save()
 
     # Receive message from WebSocket
     def receive(self, text_data):
@@ -68,7 +63,7 @@ class ChatConsumer(WebsocketConsumer):
             {
                 'type': 'chat_message',
                 'message': message,
-                'author': self.author + ": ",
+                'author': self.author,
                 'msg_id': msg_id,
             }
         )
@@ -80,21 +75,10 @@ class ChatConsumer(WebsocketConsumer):
         msg_id = event['msg_id']
 
         # Check if another user read message
-        if self.user.username != message_author[:-2]:
+        if self.user.username != message_author:
             msg = get_object_or_404(Message, pk=msg_id)
             msg.readed = True
             msg.save()
-
-        # Send message to WebSocket
-        self.send(text_data=json.dumps({
-            'message': message,
-            'message_author': message_author,
-        }))
-
-    # Get info messages
-    def info_message(self, event):
-        message = event['message']
-        message_author = event['author']
 
         # Send message to WebSocket
         self.send(text_data=json.dumps({
