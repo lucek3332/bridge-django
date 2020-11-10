@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Bridge!{% endblock %}
+
+{% block content %}
+    <div class="content-with-sidebar">
+        <div class="content-text">
+            <div class="header">
+                <h1>Bridge</h1>
+            </div>
+
+            <div class="text">
+                <p>Miłej gry w brydża!</p>
+            </div>
+
+            <div class="header">
+                <h1>Powiadomienia</h1>
+            </div>
+
+            <div class="notifications">
+                {% for notification in notifications %}
+                    {% with n=notification|first link=notification|last %}
+                        <p>Masz nieprzeczytane wiadomości od <span class="selected"><a href="{% url 'chat:room' link %}">{{ n }}.</a></span></p>
+                    {% endwith %}
+                {% empty %}
+                    <p>Nie masz żadnych powiadomień.</p>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}

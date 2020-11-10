@@ -29,9 +29,9 @@
                         <a href="/">Strona główna</a>
                     </div>
 
-                    <div class="menu-item">
+                    <div class="menu-item {% if section == 'play' %}selected{% endif %}">
                         {% if request.user.is_authenticated %}
-                            <a href=".">Graj!</a>
+                            <a href="{% url 'play' %}">Graj!</a>
                         {% endif %}
                     </div>
 

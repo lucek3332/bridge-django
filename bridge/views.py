@@ -3,6 +3,8 @@ from django.contrib.auth.decorators import login_required
 from accounts.views import search_users
 from django.contrib.auth.models import User
 from chat.models import Message
+from .play.testing import mainLoop
+from .tasks import play_task
 
 
 @login_required
@@ -19,3 +21,9 @@ def dashboard_view(request):
                                                "notifications": notifications})
     return render(request, "dashboard.html", {"section": "dashboard",
                                               "notifications": notifications})
+
+
+@login_required
+def play_view(request):
+    play_task.delay()
+    return render(request, "play.html", {"section": "play"})

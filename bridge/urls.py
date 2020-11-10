@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, re_path, include
-from .views import dashboard_view
+from .views import dashboard_view, play_view
 from django.conf.urls.static import static
 from django.conf import settings
 
@@ -25,6 +25,7 @@ urlpatterns = [
     re_path(r'^accounts/', include(("accounts.urls", "accounts"), namespace="accounts")),
     re_path(r"^$", dashboard_view, name="dashboard"),
     re_path(r"^chat/", include(("chat.urls", "chat"), namespace="chat")),
+    re_path(r"^play/$", play_view, name="play"),
 ]
 
 if settings.DEBUG:
