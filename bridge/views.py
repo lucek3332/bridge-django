@@ -3,7 +3,6 @@ from django.contrib.auth.decorators import login_required
 from accounts.views import search_users
 from django.contrib.auth.models import User
 from chat.models import Message
-from .play.testing import mainLoop
 from .tasks import play_task
 
 
@@ -25,5 +24,11 @@ def dashboard_view(request):
 
 @login_required
 def play_view(request):
-    play_task.delay()
-    return render(request, "play.html", {"section": "play"})
+    profile = request.user.profile
+    user = request.user
+    if not request.GET and not profile.play_status:
+        profile.play_status = True
+        profile.save()
+        play_task.delay(user.username)
+    return render(request, "play.html", {"section": "play",
+                                         "status_play": profile.play_status})

@@ -9,6 +9,7 @@ class Profile(models.Model):
     description = models.TextField(blank=True)
     is_online = models.BooleanField(default=False)
     chat_status = models.IntegerField(default=0)
+    play_status = models.BooleanField(default=False)
     friends = models.ManyToManyField("self", symmetrical=False, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)

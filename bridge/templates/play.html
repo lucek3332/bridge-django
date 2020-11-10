@@ -10,7 +10,11 @@
             </div>
 
             <div class="text">
-                <p>Miłej gry w brydża!</p>
+                {% if status_play %}
+                    <p>Miłej gry w brydża!</p>
+                {% else %}
+                    <p>Zagraj w brydża!</p>
+                {% endif %}
             </div>
 
             <div class="header">
@@ -28,6 +32,16 @@
             </div>
         </div>
 
+        {% include 'sidebar.html' %}
     </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript">
+    setInterval(function updateDiv() {
+        if(window.location.search.indexOf('&refresh=') == -1) {window.location.search += '&refresh=1';}
+        $(".notifications").load(" .notifications > *");
+        $(".text").load(" .text > *");
+    }, 1000);
+</script>
 
 {% endblock %}

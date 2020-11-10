@@ -3,6 +3,6 @@ from .play.testing import mainLoop
 
 
 @shared_task
-def play_task():
-    mainLoop()
+def play_task(username):
+    mainLoop(username)
     return None
