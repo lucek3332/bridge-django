@@ -1,5 +1,5 @@
 from celery import shared_task
-from .play.testing import mainLoop
+from .play.client import mainLoop
 
 
 @shared_task
