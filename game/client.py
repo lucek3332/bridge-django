@@ -1,70 +1,13 @@
-from .player import Player
-from .drawing_func import *  # importing pygame as well
-from .buttons import Button
+from game.player import Player
+from game.drawing_func import *  # importing pygame as well
+from game.buttons import Button
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from accounts.models import Profile
+import os
 
 
-pygame.init()
-
-# Images
-icon = pygame.image.load("bridge/play/images/icon.png")
-
-# Sounds
-card_sound = pygame.mixer.Sound("bridge/play/sounds/card.wav")
-
-# Screen settings
-screenWidth = 1200
-screenHeight = 1000
-
-
-# Helpful classes
-class InputString:
-    """
-    Handling user input. Utilizing for typing username.
-    """
-
-    def __init__(self):
-        self.string = ""
-
-    def add_letter(self, char):
-        """
-        Adding specific character to stored string.
-        :param char: string
-        :return: None
-        """
-        self.string += char
-
-    def remove_letter(self):
-        """
-        Removing last character from stored string.
-        :return: None
-        """
-        if len(self.string) >= 1:
-            self.string = self.string[:-1]
-        else:
-            self.reset()
-
-    def reset(self):
-        """
-        Setting stored string to empty string.
-        :return: None
-        """
-        self.string = ""
-
-    def get_string(self):
-        """
-        Getting stored string.
-        :return: string
-        """
-        return self.string
-
-
-# Buttons
-confirm_name_btn = Button(200, 80, (7, 32, 110), "POTWIERDŹ", 500, 580)
-create_table_btn = Button(200, 80, (7, 32, 110), "ZAŁÓŻ STÓŁ", 950, 880)
-lobby_btn = Button(200, 80, (7, 32, 110), "WSTAŃ", 30, 900)
+base_directory = os.path.join(__file__, os.pardir)
 
 
 def mainLoop(username):
@@ -72,77 +15,41 @@ def mainLoop(username):
     Game loop
     :return: None
     """
+    pygame.init()
+
+    # Images
+    icon = pygame.image.load(os.path.join(base_directory, "images/icon.png"))
+
+    # Sounds
+    card_sound = pygame.mixer.Sound(os.path.join(base_directory, "sounds/card.wav"))
+
+    # Screen settings
+    screenWidth = 1200
+    screenHeight = 1000
+    screen = pygame.display.set_mode((screenWidth, screenHeight))
+    pygame.display.set_caption("Bridge")
+    pygame.display.set_icon(icon)
+
+    # Buttons
+    create_table_btn = Button(200, 80, (7, 32, 110), "ZAŁÓŻ STÓŁ", 950, 880)
+    lobby_btn = Button(200, 80, (7, 32, 110), "WSTAŃ", 30, 900)
 
     # Initial values
     user = get_object_or_404(User, username=username)
     profile = get_object_or_404(Profile, user=user)
-    screen = pygame.display.set_mode((screenWidth, screenHeight))
-    pygame.display.set_caption("Bridge")
-    pygame.display.set_icon(icon)
     run = True
-    status_game = "insert name"
-    player_name = InputString()
     font = pygame.font.SysFont("Arial", 32)
     font2 = pygame.font.SysFont("Arial", 64)
+    status_game = "tables"
+    buttons = [create_table_btn]
+    p = Player(username)
 
     while run:
 
-        # View for bringing in username
-        if status_game == "insert name":
-            buttons = [confirm_name_btn]
-            redraw_insert_name(screen, font, player_name, buttons)
-
-            # Controls in specific view
-            for event in pygame.event.get():
-                # Possibility of quiting game
-                if event.type == pygame.QUIT:
-                    run = False
-                    pygame.quit()
-                    profile.play_status = False
-                    profile.save()
-                    break
-                # Pressed keys
-                if event.type == pygame.KEYDOWN:
-                    # Confirm username by ENTER and move to the next view
-                    if event.key == 13 or event.key == 271:
-                        if player_name.get_string():
-                            status_game = "tables"
-                            buttons = [create_table_btn]
-                            p = Player(player_name.string)
-                    # Removing letter
-                    elif event.key == 8:
-                        player_name.remove_letter()
-                    # Adding specific letter
-                    elif event.unicode:
-                        player_name.add_letter(event.unicode)
-                # Confirm username by clicking button and move to the next view
-                if event.type == pygame.MOUSEBUTTONUP:
-                    if confirm_name_btn.on_button() and player_name.get_string():
-                        status_game = "tables"
-                        buttons = [create_table_btn]
-                        p = Player(player_name.string)
-
-        # Username is already in use, back to previous view
-        elif status_game == "user exist":
-            redraw_user_exist(screen, font2)
-            pygame.time.delay(2000)
-            status_game = "insert name"
-            # Possibility of quiting game
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    run = False
-                    pygame.quit()
-                    profile.play_status = False
-                    profile.save()
-                    break
-
         # View for displaying available tables
-        elif status_game == "tables":
+        if status_game == "tables":
             response = p.send({"command": "waiting in lobby",
                                "user": p.username})
-            if response.get("response") != "ok":
-                if response.get("response") == "user exist":
-                    status_game = "user exist"
             empty_tables = list(response.get("empty_tables").values())[:4]
             currentPlayers = response.get("count_players")
             redraw_tables(screen, font, font2, buttons, currentPlayers)

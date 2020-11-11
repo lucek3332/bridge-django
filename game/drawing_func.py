@@ -1,13 +1,17 @@
 import pygame
-from .buttons import SeatingButton
+from game.buttons import SeatingButton
+import os
+
+
+base_directory = os.path.join(__file__, os.pardir)
 
 
 # Images of cards
 bid_font = pygame.font.SysFont("Arial", 24)
-C = pygame.image.load("bridge/play/images/bid/clubs.png")
-D = pygame.image.load("bridge/play/images/bid/diamonds.png")
-H = pygame.image.load("bridge/play/images/bid/hearts.png")
-S = pygame.image.load("bridge/play/images/bid/spades.png")
+C = pygame.image.load(os.path.join(base_directory, "images/bid/clubs.png"))
+D = pygame.image.load(os.path.join(base_directory, "images/bid/diamonds.png"))
+H = pygame.image.load(os.path.join(base_directory, "images/bid/hearts.png"))
+S = pygame.image.load(os.path.join(base_directory, "images/bid/spades.png"))
 N = bid_font.render("N", 1, (0, 0, 0), 1)
 
 
@@ -275,7 +279,7 @@ def redraw_bidding(win, font, font2, buttons, table, board, user, normal_bids, s
             rect = (x, y, 35, 35)
             bids[0].rect = rect
             bids[0].rect = (x, y, 35, 35)
-            text = font.render(bids[0].bid, 1, (0, 0, 0), 1)
+            text = font.render(bids[0].bid, 1, (0, 0, 0))
             # Marking active the level bid by light green color
             if bids[0].active:
                 pygame.draw.rect(win, (49, 224, 105), rect)
@@ -303,7 +307,7 @@ def redraw_bidding(win, font, font2, buttons, table, board, user, normal_bids, s
             rect = (x, y, 42, 35)
             b.rect = rect
             pygame.draw.rect(win, (255, 255, 255), rect)
-            text = font.render(b.text, 1, (0, 0, 0), 1)
+            text = font.render(b.text, 1, (0, 0, 0))
             win.blit(text, (round(x + rect[2] / 2 - text.get_width() / 2),
                             round(y + rect[3] / 2 - text.get_height() / 2)))
 
@@ -432,9 +436,9 @@ def redraw_score(win, font, font2, buttons, table, board, user):
         score_text = font2.render("ROZDANIE PRZEPASOWANE", 1, (0, 0, 0))
     else:
         if board.declarer[1] == [0, 2]:
-            score_text = font2.render(f"NS {board.result}, {board.score}", 1, (0, 0, 0), 1)
+            score_text = font2.render(f"NS {board.result}, {board.score}", 1, (0, 0, 0))
         else:
-            score_text = font2.render(f"EW {board.result}, {board.score}", 1, (0, 0, 0), 1)
+            score_text = font2.render(f"EW {board.result}, {board.score}", 1, (0, 0, 0))
     win.blit(score_text, (round(win.get_width() / 2 - score_text.get_width() / 2),
                           round(win.get_height() / 2 - score_text.get_height() / 2)))
     # Updating pygame window
