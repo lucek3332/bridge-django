@@ -4,6 +4,8 @@ from game.buttons import Button
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from accounts.models import Profile
+from boards.models import Board, Hand
+from datetime import datetime
 import os
 
 
@@ -136,6 +138,9 @@ def mainLoop(username):
             table = response.get("table")
             board = response.get("board")
 
+            if not board:
+                continue
+
             # Starting playing phase
             if board.status == "play":
                 status_game = "playing"
@@ -233,6 +238,40 @@ def mainLoop(username):
                 redraw_score(screen, font, font2, buttons, table, board, p)
                 pygame.time.delay(2000)
                 status_game = "waiting at table"
+                unique_id = datetime.today().strftime("%Y-%m-%d") + "-" + str(table.id) + "-" + str(board.id)
+                north_hand_db = [card.symbol for card in board.north]
+                south_hand_db = [card.symbol for card in board.south]
+                east_hand_db = [card.symbol for card in board.east]
+                west_hand_db = [card.symbol for card in board.west]
+                if Hand.objects.filter(north=north_hand_db,
+                                       south=south_hand_db,
+                                       east=east_hand_db,
+                                       west=west_hand_db
+                                       ).exists():
+                    hand_db = Hand.objects.get(north=north_hand_db,
+                                               south=south_hand_db,
+                                               east=east_hand_db,
+                                               west=west_hand_db
+                                               )
+                else:
+                    hand_db = Hand.objects.create(north=north_hand_db,
+                                                  south=south_hand_db,
+                                                  east=east_hand_db,
+                                                  west=west_hand_db
+                                                  )
+                board_db = Board.objects.create(unique_id=unique_id,
+                                                player=user,
+                                                table=table.id,
+                                                south_player=board.players[0][0],
+                                                north_player=board.players[2][0],
+                                                east_player=board.players[3][0],
+                                                west_player=board.players[1][0],
+                                                hands=hand_db,
+                                                bidding=[b.bid if b is not None else "None" for b in board.bidding],
+                                                tricks=board.history,
+                                                contract='pas',
+                                                final_result='pas'
+                                                )
                 response = p.send({"command": "score",
                                    "user": p.username,
                                    "table nr": table.id
