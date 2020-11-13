@@ -3,7 +3,7 @@ from .models import Board, Hand
 
 
 class BoardAdmin(admin.ModelAdmin):
-    list_display = ("unique_id", "table", "player", "contract", "score", "created")
+    list_display = ("unique_id", "table", "player", "final_result", "score", "created")
     list_filter = ("table", "player", "contract", "created")
     search_fields = ("contract", "score")
 

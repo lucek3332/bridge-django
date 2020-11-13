@@ -144,6 +144,7 @@ def mainLoop(username):
             # Starting playing phase
             if board.status == "play":
                 status_game = "playing"
+                save_hands_db = False
                 continue
 
             normal_bids = dict()
@@ -233,28 +234,25 @@ def mainLoop(username):
             else:
                 hand = board.east
 
+            if not save_hands_db:
+                save_hands_db = True
+                north_hand_db = [card.symbol for card in board.north]
+                south_hand_db = [card.symbol for card in board.south]
+                east_hand_db = [card.symbol for card in board.east]
+                west_hand_db = [card.symbol for card in board.west]
+
             # The board is passed out, dealing next board
             if not board.declarer:
                 redraw_score(screen, font, font2, buttons, table, board, p)
                 pygame.time.delay(2000)
                 status_game = "waiting at table"
+                # Saving board and hands in database
                 unique_id = datetime.today().strftime("%Y-%m-%d") + "-" + str(table.id) + "-" + str(board.id)
-                north_hand_db = [card.symbol for card in board.north]
-                south_hand_db = [card.symbol for card in board.south]
-                east_hand_db = [card.symbol for card in board.east]
-                west_hand_db = [card.symbol for card in board.west]
-                if Hand.objects.filter(north=north_hand_db,
-                                       south=south_hand_db,
-                                       east=east_hand_db,
-                                       west=west_hand_db
-                                       ).exists():
-                    hand_db = Hand.objects.get(north=north_hand_db,
-                                               south=south_hand_db,
-                                               east=east_hand_db,
-                                               west=west_hand_db
-                                               )
+                if Hand.objects.filter(unique_id=unique_id).exists():
+                    hand_db = Hand.objects.get(unique_id=unique_id)
                 else:
-                    hand_db = Hand.objects.create(north=north_hand_db,
+                    hand_db = Hand.objects.create(unique_id=unique_id,
+                                                  north=north_hand_db,
                                                   south=south_hand_db,
                                                   east=east_hand_db,
                                                   west=west_hand_db
@@ -270,7 +268,9 @@ def mainLoop(username):
                                                 bidding=[b.bid if b is not None else "None" for b in board.bidding],
                                                 tricks=board.history,
                                                 contract='pas',
-                                                final_result='pas'
+                                                final_result='pas',
+                                                vulnerableNS=board.vulnerable[0],
+                                                vulnerableEW=board.vulnerable[1]
                                                 )
                 response = p.send({"command": "score",
                                    "user": p.username,
@@ -284,23 +284,17 @@ def mainLoop(username):
                 redraw_score(screen, font, font2, buttons, table, board, p)
                 pygame.time.delay(4000)
                 status_game = "waiting at table"
+                # Saving board and hands in database
                 unique_id = datetime.today().strftime("%Y-%m-%d") + "-" + str(table.id) + "-" + str(board.id)
-                north_hand_db = [card.symbol for card in board.north]
-                south_hand_db = [card.symbol for card in board.south]
-                east_hand_db = [card.symbol for card in board.east]
-                west_hand_db = [card.symbol for card in board.west]
-                if Hand.objects.filter(north=north_hand_db,
-                                       south=south_hand_db,
-                                       east=east_hand_db,
-                                       west=west_hand_db
-                                       ).exists():
-                    hand_db = Hand.objects.get(north=north_hand_db,
-                                               south=south_hand_db,
-                                               east=east_hand_db,
-                                               west=west_hand_db
-                                               )
+                if board.winning_side == [0, 2]:
+                    final_result = "NS " + board.result
                 else:
-                    hand_db = Hand.objects.create(north=north_hand_db,
+                    final_result = "EW " + board.result
+                if Hand.objects.filter(unique_id=unique_id).exists():
+                    hand_db = Hand.objects.get(unique_id=unique_id)
+                else:
+                    hand_db = Hand.objects.create(unique_id=unique_id,
+                                                  north=north_hand_db,
                                                   south=south_hand_db,
                                                   east=east_hand_db,
                                                   west=west_hand_db
@@ -316,8 +310,10 @@ def mainLoop(username):
                                                 bidding=[b.bid if b is not None else "None" for b in board.bidding],
                                                 tricks=[",".join(card.symbol for card in trick) for trick in board.history],
                                                 contract=board.winning_bid,
-                                                final_result=board.result,
-                                                score=board.score
+                                                final_result=final_result,
+                                                score=board.score,
+                                                vulnerableNS=board.vulnerable[0],
+                                                vulnerableEW=board.vulnerable[1]
                                                 )
                 response = p.send({"command": "score",
                                    "user": p.username,

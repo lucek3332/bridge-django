@@ -4,10 +4,17 @@ from .fields import ListField
 
 
 class Hand(models.Model):
+    unique_id = models.CharField(max_length=100)
     south = ListField()
     north = ListField()
     east = ListField()
     west = ListField()
+
+    def __str__(self):
+        return f"Hand nr {self.unique_id}"
+
+    def __repr__(self):
+        return f"Hand nr {self.unique_id}"
 
 
 class Board(models.Model):
@@ -24,7 +31,15 @@ class Board(models.Model):
     contract = models.CharField(max_length=10)
     final_result = models.CharField(max_length=40)
     score = models.IntegerField(default=0)
+    vulnerableNS = models.BooleanField()
+    vulnerableEW = models.BooleanField()
     created = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         ordering = ("-created", )
+
+    def __str__(self):
+        return f"Board nr {self.unique_id}"
+
+    def __repr__(self):
+        return f"Board nr {self.unique_id}"
