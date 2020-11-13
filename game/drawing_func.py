@@ -326,7 +326,7 @@ def redraw_bidding(win, font, font2, buttons, table, board, user, normal_bids, s
         pygame.draw.rect(win, color_rect, (round(win.get_width() / 2 + (i - 2) * 60), 310, 60, 38))
         win.blit(header_txt, (round(win.get_width() / 2 + (i - 1.5) * 60 - header_txt.get_width() / 2), round(310 + 19 - header_txt.get_height() / 2)))
     # Displaying called bids on the table with correct localization
-    if board.status == "bidding":
+    if not board.end_bidding():
         if board.dealer == user.position:
             board.bidding = [None, None, None] + board.bidding
         else:

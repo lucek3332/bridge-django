@@ -56,6 +56,7 @@ class Board:
         self.set_vulnerable()
         self.set_dealer()
         self.shuffle()
+        self.passed_out = False
 
     def __repr__(self):
         return f"Board nr {self.id}"
@@ -275,6 +276,7 @@ class Board:
         # Auction begins with four consecutive passes
         if all(b.bid == "pas" for b in self.bidding[:4]) and len(self.bidding) == 4:
             self.status = "play"
+            self.passed_out = True
             return True
         # Three consecutive passes following a bid, double or redouble
         elif all(b.bid == "pas" for b in self.bidding[-3:]) and len(self.bidding) > 3:
@@ -421,21 +423,21 @@ class Board:
                 making_game = True
             # Adding bonus points for game, slam or grand slam to the score
             if vul:
-                if making_game:
-                    self.score += 500
+                if making_grand_slam:
+                    self.score += 1500
                 elif making_slam:
                     self.score += 750
-                elif making_grand_slam:
-                    self.score += 1500
+                elif making_game:
+                    self.score += 500
                 else:
                     self.score += 50 * (doubled * 2 + redoubled * 2)
             else:
-                if making_game:
-                    self.score += 300
+                if making_grand_slam:
+                    self.score += 1000
                 elif making_slam:
                     self.score += 500
-                elif making_grand_slam:
-                    self.score += 1000
+                elif making_game:
+                    self.score += 300
                 else:
                     self.score += 50 * (doubled * 2 + redoubled * 2)
             # Adding points for tricks and overtricks to the score
