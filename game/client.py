@@ -308,7 +308,7 @@ def mainLoop(username):
                                                 west_player=board.players[1][0],
                                                 hands=hand_db,
                                                 bidding=[b.bid if b is not None else "None" for b in board.bidding],
-                                                tricks=[",".join(card.symbol for card in trick) for trick in board.history],
+                                                tricks=[",".join(card for card in trick) for trick in board.history],
                                                 contract=board.winning_bid,
                                                 final_result=final_result,
                                                 score=board.score,

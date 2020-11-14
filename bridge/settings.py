@@ -104,6 +104,8 @@ DATABASES = {
 # Login settings
 LOGIN_REDIRECT_URL = reverse_lazy("dashboard")
 
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
