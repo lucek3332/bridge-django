@@ -30,7 +30,7 @@
                         <tbody>
                             {% for b in boards %}
                                 <tr>
-                                    <td>{{ b.created }}</td>
+                                    <td>{{ b.created|date:"d M Y" }}</td>
                                     <td>{{ b.table }}</td>
                                     <td>{{ b.unique_id|get_board_id}}</td>
                                     <td>{{ b.west_player}}</td>
@@ -47,7 +47,7 @@
                 </div>
             {% else %}
                 <div class="message-info">
-                    Nie masz jeszcze żadnych skończonych rozdań. <a href="{% url 'play' %}">Zagraj!</a>
+                    Nie masz jeszcze żadnych skończonych rozdań. <a href="{% url 'play' %}"><span id="colored-bold">Zagraj!</span></a>
                 </div>
             {% endif %}
         </div>
