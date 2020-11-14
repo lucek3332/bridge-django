@@ -1,24 +1,55 @@
 {% extends 'base.html' %}
+{% load get_board_id %}
 
 {% block title %}Moje rozdania{% endblock %}
 
 {% block content %}
-    <div class="content">
+    <div class="content-boards">
         <div class="header">
             <h1>Moje rozdania</h1>
         </div>
 
-        <div>
-            <div>
-                {% for b in boards %}
-                    <a href="{{ b.get_absolute_url }}">
-                        {{ b }}<br>
-                    </a>
-                {% empty %}
-                    <p>Nie masz jeszcze żadnych skończonych rozdań. <a href="{% url 'play' %}">Zagraj!</a></p>
-                {% endfor %}
-            </div>
-
+        <div class="boards-section">
+            {% if boards %}
+                <div class="boards-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Data</th>
+                                <th>Nr stołu</th>
+                                <th>Nr rozdania</th>
+                                <th>W</th>
+                                <th>N</th>
+                                <th>E</th>
+                                <th>S</th>
+                                <th>Kontrakt</th>
+                                <th>Wynik</th>
+                                <th>Szczegóły</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for b in boards %}
+                                <tr>
+                                    <td>{{ b.created }}</td>
+                                    <td>{{ b.table }}</td>
+                                    <td>{{ b.unique_id|get_board_id}}</td>
+                                    <td>{{ b.west_player}}</td>
+                                    <td>{{ b.north_player }}</td>
+                                    <td>{{ b.east_player }}</td>
+                                    <td>{{ b.south_player }}</td>
+                                    <td>{{ b.final_result }}</td>
+                                    <td>{{ b.score }}</td>
+                                    <td><a href="{{ b.get_absolute_url }}">Zobacz</a></td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="message-info">
+                    Nie masz jeszcze żadnych skończonych rozdań. <a href="{% url 'play' %}">Zagraj!</a>
+                </div>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

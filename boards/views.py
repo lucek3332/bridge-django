@@ -1,6 +1,5 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Board
-from django.contrib.auth.models import User
 
 
 def board_list_view(request):
