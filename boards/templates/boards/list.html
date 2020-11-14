@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Moje rozdania{% endblock %}
+
+{% block content %}
+    <div class="content">
+        <div class="header">
+            <h1>Moje rozdania</h1>
+        </div>
+
+        <div>
+            <div>
+                {% for b in boards %}
+                    <a href="{{ b.get_absolute_url }}">
+                        {{ b }}<br>
+                    </a>
+                {% empty %}
+                    <p>Nie masz jeszcze żadnych skończonych rozdań. <a href="{% url 'play' %}">Zagraj!</a></p>
+                {% endfor %}
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

@@ -26,6 +26,7 @@ urlpatterns = [
     re_path(r"^$", dashboard_view, name="dashboard"),
     re_path(r"^chat/", include(("chat.urls", "chat"), namespace="chat")),
     re_path(r"^play/$", play_view, name="play"),
+    re_path(r"boards/", include(("boards.urls", "boards"), namespace="boards"))
 ]
 
 if settings.DEBUG:

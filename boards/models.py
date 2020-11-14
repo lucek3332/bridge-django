@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from .fields import ListField
+from django.urls import reverse
 
 
 class Hand(models.Model):
@@ -43,3 +44,10 @@ class Board(models.Model):
 
     def __repr__(self):
         return f"Board nr {self.unique_id}"
+
+    @staticmethod
+    def get_last_boards(user):
+        return Board.objects.filter(player=user)[:20]
+
+    def get_absolute_url(self):
+        return reverse("boards:board_detail", args=[self.player.username, self.unique_id])

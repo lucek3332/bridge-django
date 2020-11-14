@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ board }}{% endblock %}
+
+{% block content %}
+    <div class="content">
+        <div class="header">
+            <h1>Rozdanie {{ board.unique_id }}</h1>
+        </div>
+
+        <div>
+            <div>
+                {{ board }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
