@@ -1,16 +1,234 @@
 {% extends 'base.html' %}
+{% load static %}
+{% load boards_tags %}
 
 {% block title %}{{ board }}{% endblock %}
 
 {% block content %}
-    <div class="content">
+    <div class="content-boards">
         <div class="header">
-            <h1>Rozdanie {{ board.unique_id }}</h1>
+            <h1>Rozdanie - szczegóły</h1>
         </div>
 
-        <div>
-            <div>
-                {{ board }}
+        <div class="board-detail-wrapper">
+            <div class="board-date">
+                {{ board.created }}
+            </div>
+
+            <div class="board-info">
+                Stół nr {{ board.table }} - rozdanie {{ board.unique_id|get_board_id }}
+            </div>
+
+            <div class="board-hands-bidding-wrapper">
+                <div class="board-hands-wrapper">
+                    <div class="board-hand-wrapper" id="north-hand">
+                        <div class="board-hand-name">
+                            N - {{ board.north_player }}
+                        </div>
+                        <div class="board-hand">
+                            <div class="board-suit">
+                                <img src="{% static 'images/spades.png' %}">
+                                <div class="board-cards">
+                                    {% with north_hand=board.hands.north|get_suit:"S" %}
+                                        {% for c in north_hand %}
+                                            {{ c }}
+                                        {% endfor %}
+                                    {% endwith %}
+                                </div>
+                            </div>
+
+                            <div class="board-suit">
+                                <img src="{% static 'images/hearts.png' %}">
+                                <div class="board-cards">
+                                    {% with north_hand=board.hands.north|get_suit:"H" %}
+                                        {% for c in north_hand %}
+                                            {{ c }}
+                                        {% endfor %}
+                                    {% endwith %}
+                                </div>
+                            </div>
+
+                            <div class="board-suit">
+                                <img src="{% static 'images/diamonds.png' %}">
+                                <div class="board-cards">
+                                    {% with north_hand=board.hands.north|get_suit:"D" %}
+                                        {% for c in north_hand %}
+                                            {{ c }}
+                                        {% endfor %}
+                                    {% endwith %}
+                                </div>
+                            </div>
+
+                            <div class="board-suit">
+                                <img src="{% static 'images/clubs.png' %}">
+                                <div class="board-cards">
+                                    {% with north_hand=board.hands.north|get_suit:"C" %}
+                                        {% for c in north_hand %}
+                                            {{ c }}
+                                        {% endfor %}
+                                    {% endwith %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="board-hand-wrapper" id="west-hand">
+                        <div class="board-hand-name">
+                            W - {{ board.west_player }}
+                        </div>
+                        <div class="board-hand">
+                            <div class="board-suit">
+                                <img src="{% static 'images/spades.png' %}">
+                                <div class="board-cards">
+                                    {% with west_hand=board.hands.west|get_suit:"S" %}
+                                        {% for c in west_hand %}
+                                            {{ c }}
+                                        {% endfor %}
+                                    {% endwith %}
+                                </div>
+                            </div>
+
+                            <div class="board-suit">
+                                <img src="{% static 'images/hearts.png' %}">
+                                <div class="board-cards">
+                                    {% with west_hand=board.hands.west|get_suit:"H" %}
+                                        {% for c in west_hand %}
+                                            {{ c }}
+                                        {% endfor %}
+                                    {% endwith %}
+                                </div>
+                            </div>
+
+                            <div class="board-suit">
+                                <img src="{% static 'images/diamonds.png' %}">
+                                <div class="board-cards">
+                                    {% with west_hand=board.hands.west|get_suit:"D" %}
+                                        {% for c in west_hand %}
+                                            {{ c }}
+                                        {% endfor %}
+                                    {% endwith %}
+                                </div>
+                            </div>
+
+                            <div class="board-suit">
+                                <img src="{% static 'images/clubs.png' %}">
+                                <div class="board-cards">
+                                    {% with west_hand=board.hands.west|get_suit:"C" %}
+                                        {% for c in west_hand %}
+                                            {{ c }}
+                                        {% endfor %}
+                                    {% endwith %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="board-hand-wrapper" id="east-hand">
+                        <div class="board-hand-name">
+                            E - {{ board.east_player }}
+                        </div>
+                        <div class="board-hand">
+                            <div class="board-suit">
+                                <img src="{% static 'images/spades.png' %}">
+                                <div class="board-cards">
+                                    {% with east_hand=board.hands.east|get_suit:"S" %}
+                                        {% for c in east_hand %}
+                                            {{ c }}
+                                        {% endfor %}
+                                    {% endwith %}
+                                </div>
+                            </div>
+
+                            <div class="board-suit">
+                                <img src="{% static 'images/hearts.png' %}">
+                                <div class="board-cards">
+                                    {% with east_hand=board.hands.east|get_suit:"H" %}
+                                        {% for c in east_hand %}
+                                            {{ c }}
+                                        {% endfor %}
+                                    {% endwith %}
+                                </div>
+                            </div>
+
+                            <div class="board-suit">
+                                <img src="{% static 'images/diamonds.png' %}">
+                                <div class="board-cards">
+                                    {% with east_hand=board.hands.east|get_suit:"D" %}
+                                        {% for c in east_hand %}
+                                            {{ c }}
+                                        {% endfor %}
+                                    {% endwith %}
+                                </div>
+                            </div>
+
+                            <div class="board-suit">
+                                <img src="{% static 'images/clubs.png' %}">
+                                <div class="board-cards">
+                                    {% with east_hand=board.hands.east|get_suit:"C" %}
+                                        {% for c in east_hand %}
+                                            {{ c }}
+                                        {% endfor %}
+                                    {% endwith %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="board-hand-wrapper" id="south-hand">
+                        <div class="board-hand-name">
+                            S - {{ board.south_player }}
+                        </div>
+                        <div class="board-hand">
+                            <div class="board-suit">
+                                <img src="{% static 'images/spades.png' %}">
+                                <div class="board-cards">
+                                    {% with south_hand=board.hands.south|get_suit:"S" %}
+                                        {% for c in south_hand %}
+                                            {{ c }}
+                                        {% endfor %}
+                                    {% endwith %}
+                                </div>
+                            </div>
+
+                            <div class="board-suit">
+                                <img src="{% static 'images/hearts.png' %}">
+                                <div class="board-cards">
+                                    {% with south_hand=board.hands.south|get_suit:"H" %}
+                                        {% for c in south_hand %}
+                                            {{ c }}
+                                        {% endfor %}
+                                    {% endwith %}
+                                </div>
+                            </div>
+
+                            <div class="board-suit">
+                                <img src="{% static 'images/diamonds.png' %}">
+                                <div class="board-cards">
+                                    {% with south_hand=board.hands.south|get_suit:"D" %}
+                                        {% for c in south_hand %}
+                                            {{ c }}
+                                        {% endfor %}
+                                    {% endwith %}
+                                </div>
+                            </div>
+
+                            <div class="board-suit">
+                                <img src="{% static 'images/clubs.png' %}">
+                                <div class="board-cards">
+                                    {% with south_hand=board.hands.south|get_suit:"C" %}
+                                        {% for c in south_hand %}
+                                            {{ c }}
+                                        {% endfor %}
+                                    {% endwith %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bidding-tricks-wrapper">
+
+                </div>
             </div>
         </div>
     </div>
