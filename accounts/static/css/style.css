@@ -159,10 +159,15 @@ a:link {
 	align-items: center;
 }
 
+.board-score {
+	font-size: 28px;
+	color: rgb(191, 4, 19);
+}
+
 .board-hands-bidding-wrapper {
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	grid-column-gap: 50px;
+	display: flex;
+	justify-content: space-around;	
+	column-gap: 50px;
 }
 
 .board-hands-wrapper {
@@ -172,30 +177,35 @@ a:link {
 	grid-row-gap: 20px;
 	grid-column-gap: 20px;
 	margin: 30px;
+	margin-left: 50px;
 }
 
 .board-hand-wrapper#north-hand {
 	grid-column: 2/3;
 	background-color: white;
 	border-radius: 20px;
+	max-height: 160px;
 }
 
 .board-hand-wrapper#west-hand {
 	grid-column: 1/1;
 	background-color: white;
 	border-radius: 20px;
+	max-height: 160px;
 }
 
 .board-hand-wrapper#east-hand {
 	grid-column: 3/3;
 	background-color: white;
 	border-radius: 20px;
+	max-height: 160px;
 }
 
 .board-hand-wrapper#south-hand {
 	grid-column: 2/3;
 	background-color: white;
 	border-radius: 20px;
+	max-height: 160px;
 }
 
 .board-hand-name {
@@ -223,6 +233,73 @@ a:link {
 	padding-left: 4px;
 }
 
+.bidding-tricks-wrapper {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-between;
+	margin-top: 30px;
+	margin-bottom: 30px;
+	margin-right: 50px;
+}
+
+.bidding-wrapper, .tricks-wrapper {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.bidding-title {
+	color: rgb(191, 4, 19);
+	padding-bottom: 10px;
+	font-family: 'Titillium Web', sans-serif;
+	font-size: 26px;
+}
+
+.tricks-title {
+	color: rgb(191, 4, 19);
+	padding-bottom: 10px;
+	font-family: 'Titillium Web', sans-serif;
+	font-size: 26px;
+	margin-top: 20px;
+}
+
+#vul-table {
+	color: white;
+	background-color: rgb(191, 4, 19);
+	margin-bottom: 5px;
+	font-size: 20px;
+	text-align: center;
+	padding: 2px;
+	min-width: 34px;
+}
+
+#nonvul-table {
+	color: rgb(0, 0, 0);
+	background-color: white;
+	margin-bottom: 5px;
+	font-size: 20px;
+	text-align: center;
+	padding: 2px;
+	min-width: 34px;
+}
+
+
+.bidding-table table tbody td {
+	font-size: 18px;
+	text-align: center;
+	padding: 2px;
+}
+
+.tricks-table table tbody td {
+	font-size: 18px;
+	text-align: center;
+	padding: 2px;
+}
+
+.board-button {
+	margin-top: 20px;
+}
 
 /* Chat */
 

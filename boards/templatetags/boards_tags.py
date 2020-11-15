@@ -73,6 +73,7 @@ def get_tricks(tricks):
     countRows = ceil(len(modified_tricks) / 4)
     for row in range(countRows):
         res.append(modified_tricks[row * 4: row * 4 + 4])
+    res = [row[1::] + [row[0]] for row in res]
     return res
 
 
