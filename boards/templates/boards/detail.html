@@ -11,6 +11,10 @@
         </div>
 
         <div class="board-detail-wrapper">
+            <div class="board-score">
+                {{ board.final_result }}, {{ board.score }}
+            </div>
+
             <div class="board-date">
                 {{ board.created }}
             </div>
@@ -227,7 +231,81 @@
                 </div>
 
                 <div class="bidding-tricks-wrapper">
+                    <div class="bidding-wrapper">
+                        <div class="bidding-title">
+                            Licytacja
+                        </div>
 
+                        <div class="bidding-table">
+                            {% with bidding=board.bidding|get_bidding %}
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th {% if board.vulnerableEW %}id="vul-table"{% else %}id="nonvul-table"{% endif %}>W</th>
+                                            <th {% if board.vulnerableNS %}id="vul-table"{% else %}id="nonvul-table"{% endif %}>N</th>
+                                            <th {% if board.vulnerableEW %}id="vul-table"{% else %}id="nonvul-table"{% endif %}>E</th>
+                                            <th {% if board.vulnerableNS %}id="vul-table"{% else %}id="nonvul-table"{% endif %}>S</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        {% for row in bidding %}
+                                            <tr>
+                                                {% for bid in row %}
+                                                    <td>{% if bid != 'None' %}{{ bid }}{% endif %}</td>
+                                                {% endfor %}
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            {% endwith %}
+                        </div>
+                    </div>
+
+                    <div class="tricks-wrapper">
+                        <div class="tricks-title">
+                            Przebieg rozdania
+                        </div>
+
+                        <div class="tricks-table">
+                            {% if board.score == 0 %}
+                                <div class="message-info">
+                                    Rozdanie przepasowane
+                                </div>
+                            {% else %}
+                                {% with tricks=board.tricks|get_tricks %}
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th {% if board.vulnerableEW %}id="vul-table"{% else %}id="nonvul-table"{% endif %}>W</th>
+                                            <th {% if board.vulnerableNS %}id="vul-table"{% else %}id="nonvul-table"{% endif %}>N</th>
+                                            <th {% if board.vulnerableEW %}id="vul-table"{% else %}id="nonvul-table"{% endif %}>E</th>
+                                            <th {% if board.vulnerableNS %}id="vul-table"{% else %}id="nonvul-table"{% endif %}>S</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        {% for trick in tricks %}
+                                            <tr>
+                                                {% for card in trick %}
+                                                    <td>{{ card }}</td>
+                                                {% endfor %}
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            {% endwith %}
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="board-button-wrapper">
+                        <div class="board-button">
+                            <a href="{% url 'boards:board_list' %}">
+                                <button id="button">Powrót</button>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
