@@ -10,3 +10,4 @@ Website application written in Python using Django framework.
 - RabbitMQ or other message broker for Celery
 - Channels
 - Channels-Redis 2.4.2
+- Pygame 

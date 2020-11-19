@@ -32,5 +32,11 @@
                 <input id="button" type="submit" value="Zapisz">
             </form>
         </div>
+
+        <div class="change-password-link">
+            <a href="{% url 'accounts:password_change' %}">
+                Zmień hasło
+            </a>
+        </div>
     </div>
 {% endblock %}

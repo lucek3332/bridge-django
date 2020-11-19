@@ -700,6 +700,13 @@ a:link {
 	color: rgb(191, 4, 19);
 }
 
+
+.change-password-link {
+	text-align: center;
+	color: rgb(191, 4, 19);
+	margin-bottom: 20px;
+}
+
 /* Footer */
 
 .footer {
